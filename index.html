@@ -11,40 +11,238 @@
             box-sizing: border-box;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
+        
         body {
             background: #0a0a0a;
             color: white;
             padding: 20px;
         }
+        
         .container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
         }
+        
+        /* УВЕДОМЛЕНИЯ СВЕРХУ СПРАВА */
+        .notification-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 350px;
+        }
+        
+        .notification {
+            background: #1a1a1a;
+            border-left: 5px solid #40a7e3;
+            border-radius: 12px;
+            padding: 16px 20px;
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            animation: slideIn 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            backdrop-filter: blur(10px);
+            border: 1px solid #333;
+        }
+        
+        .notification.success {
+            border-left-color: #2ecc71;
+        }
+        
+        .notification.error {
+            border-left-color: #e34a40;
+        }
+        
+        .notification.warning {
+            border-left-color: #f39c12;
+        }
+        
+        .notification-icon {
+            font-size: 20px;
+        }
+        
+        .notification-content {
+            flex: 1;
+        }
+        
+        .notification-title {
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+        
+        .notification-close {
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+            font-size: 18px;
+        }
+        
+        .notification-close:hover {
+            opacity: 1;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100px);
+                opacity: 0;
+            }
+        }
+        
+        /* КАРТОЧКИ */
         .card {
             background: #111;
             border-radius: 25px;
             padding: 25px;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             border: 1px solid #333;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
         }
+        
         h1 {
             font-size: 28px;
             margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
+        
+        h2 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #40a7e3;
+        }
+        
+        h3 {
+            font-size: 16px;
+            margin-bottom: 15px;
+            color: #aaa;
+        }
+        
         .subtitle {
             color: #888;
             font-size: 14px;
         }
+        
+        /* ВЫБОР ГРУППЫ */
+        .group-selector {
+            background: #0d0d0d;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 25px;
+            border: 1px solid #333;
+        }
+        
+        .group-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+            padding-bottom: 5px;
+        }
+        
+        .group-tab {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 15px;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        
+        .group-tab:hover {
+            background: #252525;
+            border-color: #40a7e3;
+        }
+        
+        .group-tab.active {
+            background: #40a7e3;
+            border-color: #40a7e3;
+        }
+        
+        .group-tab.active .group-name {
+            color: white;
+        }
+        
+        .group-tab .group-name {
+            font-weight: 600;
+            color: #ddd;
+        }
+        
+        .group-tab .group-id {
+            font-size: 12px;
+            color: #888;
+        }
+        
+        .group-tab.active .group-id {
+            color: rgba(255,255,255,0.8);
+        }
+        
+        .group-tab .remove-group {
+            margin-left: 10px;
+            color: #888;
+            font-size: 18px;
+            padding: 0 5px;
+        }
+        
+        .group-tab .remove-group:hover {
+            color: #e34a40;
+        }
+        
+        .add-group-form {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .add-group-form input {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        /* ПОЛЯ ВВОДА */
         .input-group {
             margin-bottom: 20px;
         }
+        
         label {
             display: block;
             margin-bottom: 8px;
             color: #aaa;
             font-size: 14px;
+            font-weight: 600;
         }
-        input, textarea {
+        
+        input, textarea, select {
             width: 100%;
             padding: 15px;
             background: #1a1a1a;
@@ -52,7 +250,16 @@
             border-radius: 15px;
             color: white;
             font-size: 16px;
+            transition: all 0.2s;
         }
+        
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #40a7e3;
+            background: #222;
+        }
+        
+        /* КНОПКИ */
         .btn {
             background: #40a7e3;
             color: white;
@@ -62,129 +269,425 @@
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            width: 100%;
-            margin-bottom: 10px;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
+        
+        .btn:hover {
+            background: #2d8ac7;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(64, 167, 227, 0.3);
+        }
+        
         .btn.red {
             background: #e34a40;
         }
+        
+        .btn.red:hover {
+            background: #c73a30;
+            box-shadow: 0 5px 20px rgba(227, 74, 64, 0.3);
+        }
+        
         .btn.green {
             background: #2ecc71;
         }
-        .status {
-            background: #1a1a1a;
-            border-left: 5px solid #40a7e3;
+        
+        .btn.green:hover {
+            background: #27ae60;
+        }
+        
+        .btn.small {
+            padding: 10px 20px;
+            font-size: 14px;
+        }
+        
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        /* ИНФОРМАЦИЯ О ГРУППЕ */
+        .info-table {
+            background: #0d0d0d;
+            border-radius: 15px;
             padding: 15px;
-            border-radius: 10px;
             margin-top: 20px;
-            display: none;
         }
-        .status.show {
-            display: block;
-        }
-        .status.error {
-            border-left-color: #e34a40;
-        }
-        .status.success {
-            border-left-color: #2ecc71;
-        }
+        
         .info-row {
             display: flex;
             justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid #333;
+            padding: 12px 0;
+            border-bottom: 1px solid #222;
+        }
+        
+        .info-row:last-child {
+            border-bottom: none;
+        }
+        
+        .info-label {
+            color: #888;
+        }
+        
+        .info-value {
+            color: #fff;
+            font-weight: 600;
+        }
+        
+        /* БЫСТРЫЕ ДЕЙСТВИЯ */
+        .quick-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+        
+        .quick-action-btn {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #ddd;
+        }
+        
+        .quick-action-btn:hover {
+            background: #252525;
+            border-color: #40a7e3;
+            color: white;
+        }
+        
+        /* АКТИВНАЯ ГРУППА */
+        .active-group-info {
+            background: rgba(64, 167, 227, 0.1);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid #40a7e3;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .active-group-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: #40a7e3;
+        }
+        
+        .active-group-id {
+            font-size: 14px;
+            color: #888;
         }
     </style>
 </head>
 <body>
+    <!-- КОНТЕЙНЕР ДЛЯ УВЕДОМЛЕНИЙ (СВЕРХУ СПРАВА) -->
+    <div id="notificationContainer" class="notification-container"></div>
+
     <div class="container">
+        <!-- ШАПКА -->
         <div class="card">
             <h1>🤖 Telegram Group Manager</h1>
-            <div class="subtitle">Управление группами Telegram через веб-интерфейс</div>
+            <div class="subtitle">Управление несколькими группами Telegram через веб-интерфейс</div>
         </div>
 
-        <div class="card">
-            <h2 style="margin-bottom: 20px;">⚙️ Настройки</h2>
+        <!-- ВЫБОР ГРУППЫ -->
+        <div class="group-selector">
+            <h2>📋 МОИ ГРУППЫ</h2>
             
-            <div class="input-group">
-                <label>🤖 Токен бота</label>
-                <input type="text" id="botToken" placeholder="123456789:ABCdefGHIjklMNOpqrsTUVwxyz">
+            <!-- СПИСОК ГРУПП -->
+            <div id="groupTabs" class="group-tabs">
+                <!-- Группы будут добавляться сюда динамически -->
+            </div>
+            
+            <!-- АКТИВНАЯ ГРУППА -->
+            <div id="activeGroupInfo" class="active-group-info" style="display: none;">
+                <div>
+                    <div class="active-group-name" id="activeGroupName"></div>
+                    <div class="active-group-id" id="activeGroupId"></div>
+                </div>
+                <div>
+                    <span style="background: #2ecc71; width: 10px; height: 10px; border-radius: 50%; display: inline-block;"></span>
+                    <span style="color: #2ecc71; margin-left: 5px;">Активна</span>
+                </div>
+            </div>
+            
+            <!-- ДОБАВЛЕНИЕ НОВОЙ ГРУППЫ -->
+            <h3 style="margin-top: 20px;">➕ Добавить новую группу</h3>
+            <div class="add-group-form">
+                <input type="text" id="newGroupName" placeholder="Название группы (например: Работа)">
+                <input type="text" id="newBotToken" placeholder="Токен бота">
+                <input type="text" id="newChatId" placeholder="ID группы">
+                <button class="btn green small" onclick="addNewGroup()">➕ ДОБАВИТЬ</button>
+            </div>
+        </div>
+
+        <!-- ПАНЕЛЬ УПРАВЛЕНИЯ (отображается только если есть активная группа) -->
+        <div id="controlPanel" style="display: none;">
+            <!-- НАЗВАНИЕ -->
+            <div class="card">
+                <h2>📌 Название группы</h2>
+                <div class="input-group">
+                    <input type="text" id="groupTitle" placeholder="Введите новое название">
+                </div>
+                <button class="btn" onclick="setGroupTitle()">📝 ИЗМЕНИТЬ НАЗВАНИЕ</button>
             </div>
 
-            <div class="input-group">
-                <label>👥 ID группы</label>
-                <input type="text" id="chatId" placeholder="-1001234567890">
+            <!-- ОПИСАНИЕ -->
+            <div class="card">
+                <h2>📄 Описание группы</h2>
+                <div class="input-group">
+                    <textarea id="groupDescription" rows="4" placeholder="Введите новое описание"></textarea>
+                </div>
+                <button class="btn" onclick="setGroupDescription()">📄 ОБНОВИТЬ ОПИСАНИЕ</button>
             </div>
 
-            <button class="btn green" onclick="saveSettings()">💾 СОХРАНИТЬ</button>
-        </div>
-
-        <div class="card">
-            <h2 style="margin-bottom: 20px;">📌 Название группы</h2>
-            <div class="input-group">
-                <input type="text" id="groupTitle" placeholder="Введите новое название">
+            <!-- ФОТО -->
+            <div class="card">
+                <h2>🖼 Фото группы</h2>
+                <div class="button-grid">
+                    <button class="btn red" onclick="deleteGroupPhoto()">🗑 УДАЛИТЬ ФОТО</button>
+                </div>
             </div>
-            <button class="btn" onclick="setGroupTitle()">ИЗМЕНИТЬ</button>
-        </div>
 
-        <div class="card">
-            <h2 style="margin-bottom: 20px;">📄 Описание группы</h2>
-            <div class="input-group">
-                <textarea id="groupDescription" rows="4" placeholder="Введите новое описание"></textarea>
+            <!-- БЫСТРЫЕ ДЕЙСТВИЯ -->
+            <div class="card">
+                <h2>⚡ Быстрые действия</h2>
+                <div class="quick-actions">
+                    <div class="quick-action-btn" onclick="getGroupInfo()">
+                        <span>ℹ️</span> Информация
+                    </div>
+                    <div class="quick-action-btn" onclick="copyGroupId()">
+                        <span>📋</span> Копировать ID
+                    </div>
+                    <div class="quick-action-btn" onclick="copyBotToken()">
+                        <span>🔑</span> Копировать токен
+                    </div>
+                </div>
+                
+                <!-- ИНФОРМАЦИЯ О ГРУППЕ -->
+                <div id="groupInfo" class="info-table" style="display: none; margin-top: 20px;">
+                    <div class="info-row">
+                        <span class="info-label">📌 Название:</span>
+                        <span class="info-value" id="infoTitle">-</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">🆔 ID:</span>
+                        <span class="info-value" id="infoId">-</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">📝 Описание:</span>
+                        <span class="info-value" id="infoDesc">-</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">🖼 Фото:</span>
+                        <span class="info-value" id="infoPhoto">-</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">👥 Участников:</span>
+                        <span class="info-value" id="infoMembers">-</span>
+                    </div>
+                </div>
             </div>
-            <button class="btn" onclick="setGroupDescription()">ОБНОВИТЬ</button>
-        </div>
-
-        <div class="card">
-            <h2 style="margin-bottom: 20px;">🖼 Фото группы</h2>
-            <button class="btn red" onclick="deleteGroupPhoto()">УДАЛИТЬ ФОТО</button>
-        </div>
-
-        <div class="card">
-            <h2 style="margin-bottom: 20px;">ℹ️ Информация</h2>
-            <button class="btn" onclick="getGroupInfo()">ПОЛУЧИТЬ ИНФОРМАЦИЮ</button>
-            <div id="groupInfo" style="margin-top: 20px; display: none;"></div>
-        </div>
-
-        <div id="statusMessage" class="status">
-            <span id="statusText"></span>
         </div>
     </div>
 
     <script>
-        function saveSettings() {
-            const token = document.getElementById('botToken').value.trim();
-            const chatId = document.getElementById('chatId').value.trim();
+        // ========== СИСТЕМА УВЕДОМЛЕНИЙ (СВЕРХУ СПРАВА) ==========
+        function showNotification(title, message, type = 'info', duration = 5000) {
+            const container = document.getElementById('notificationContainer');
             
-            if (!token || !chatId) {
-                showStatus('❌ Введи токен и ID группы!', 'error');
+            // Создаем уведомление
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            
+            // Иконка в зависимости от типа
+            let icon = 'ℹ️';
+            if (type === 'success') icon = '✅';
+            if (type === 'error') icon = '❌';
+            if (type === 'warning') icon = '⚠️';
+            
+            notification.innerHTML = `
+                <div class="notification-icon">${icon}</div>
+                <div class="notification-content">
+                    <div class="notification-title">${title}</div>
+                    <div>${message}</div>
+                </div>
+                <div class="notification-close" onclick="this.parentElement.remove()">✕</div>
+            `;
+            
+            container.appendChild(notification);
+            
+            // Автоматическое удаление через duration
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, duration);
+        }
+
+        // ========== УПРАВЛЕНИЕ ГРУППАМИ ==========
+        let groups = [];
+        let activeGroupId = null;
+
+        // Загрузка групп из localStorage
+        function loadGroups() {
+            const savedGroups = localStorage.getItem('telegramGroups');
+            if (savedGroups) {
+                groups = JSON.parse(savedGroups);
+            } else {
+                // Группа по умолчанию
+                groups = [];
+            }
+            
+            renderGroups();
+            
+            // Загружаем активную группу
+            const savedActiveGroup = localStorage.getItem('activeGroupId');
+            if (savedActiveGroup) {
+                setActiveGroup(savedActiveGroup);
+            }
+        }
+
+        // Сохранение групп в localStorage
+        function saveGroups() {
+            localStorage.setItem('telegramGroups', JSON.stringify(groups));
+        }
+
+        // Отображение групп
+        function renderGroups() {
+            const groupTabs = document.getElementById('groupTabs');
+            groupTabs.innerHTML = '';
+            
+            groups.forEach((group, index) => {
+                const tab = document.createElement('div');
+                tab.className = `group-tab ${activeGroupId === group.id ? 'active' : ''}`;
+                tab.innerHTML = `
+                    <span class="group-name">${group.name || 'Без названия'}</span>
+                    <span class="group-id">${maskId(group.chatId)}</span>
+                    <span class="remove-group" onclick="removeGroup('${group.id}', event)">✕</span>
+                `;
+                tab.onclick = (e) => {
+                    if (!e.target.classList.contains('remove-group')) {
+                        setActiveGroup(group.id);
+                    }
+                };
+                groupTabs.appendChild(tab);
+            });
+            
+            // Если нет групп, показываем сообщение
+            if (groups.length === 0) {
+                groupTabs.innerHTML = '<div style="color: #888; padding: 20px;">➕ Добавьте первую группу</div>';
+                document.getElementById('controlPanel').style.display = 'none';
+                document.getElementById('activeGroupInfo').style.display = 'none';
+            }
+        }
+
+        // Добавление новой группы
+        function addNewGroup() {
+            const name = document.getElementById('newGroupName').value.trim();
+            const token = document.getElementById('newBotToken').value.trim();
+            const chatId = document.getElementById('newChatId').value.trim();
+            
+            if (!name || !token || !chatId) {
+                showNotification('Ошибка', 'Заполните все поля!', 'error');
                 return;
             }
             
-            localStorage.setItem('botToken', token);
-            localStorage.setItem('chatId', chatId);
-            showStatus('✅ Настройки сохранены!', 'success');
-        }
-
-        function loadSettings() {
-            const token = localStorage.getItem('botToken');
-            const chatId = localStorage.getItem('chatId');
+            const newGroup = {
+                id: Date.now().toString(),
+                name: name,
+                token: token,
+                chatId: chatId,
+                dateAdded: new Date().toISOString()
+            };
             
-            if (token) document.getElementById('botToken').value = token;
-            if (chatId) document.getElementById('chatId').value = chatId;
+            groups.push(newGroup);
+            saveGroups();
+            renderGroups();
+            
+            // Очищаем поля
+            document.getElementById('newGroupName').value = '';
+            document.getElementById('newBotToken').value = '';
+            document.getElementById('newChatId').value = '';
+            
+            showNotification('Успешно', `Группа "${name}" добавлена`, 'success');
+            
+            // Активируем новую группу
+            setActiveGroup(newGroup.id);
         }
 
+        // Удаление группы
+        function removeGroup(groupId, event) {
+            event.stopPropagation();
+            
+            if (confirm('Удалить группу?')) {
+                groups = groups.filter(g => g.id !== groupId);
+                saveGroups();
+                
+                if (activeGroupId === groupId) {
+                    activeGroupId = groups.length > 0 ? groups[0].id : null;
+                    if (activeGroupId) {
+                        setActiveGroup(activeGroupId);
+                    } else {
+                        document.getElementById('controlPanel').style.display = 'none';
+                        document.getElementById('activeGroupInfo').style.display = 'none';
+                    }
+                }
+                
+                renderGroups();
+                showNotification('Успешно', 'Группа удалена', 'success');
+            }
+        }
+
+        // Установка активной группы
+        function setActiveGroup(groupId) {
+            const group = groups.find(g => g.id === groupId);
+            if (!group) return;
+            
+            activeGroupId = groupId;
+            localStorage.setItem('activeGroupId', groupId);
+            
+            // Обновляем информацию об активной группе
+            document.getElementById('activeGroupName').textContent = group.name;
+            document.getElementById('activeGroupId').textContent = group.chatId;
+            document.getElementById('activeGroupInfo').style.display = 'flex';
+            
+            // Показываем панель управления
+            document.getElementById('controlPanel').style.display = 'block';
+            
+            // Обновляем отображение вкладок
+            renderGroups();
+            
+            showNotification('Группа активирована', `Выбрана: ${group.name}`, 'success');
+        }
+
+        // Маскировка ID
+        function maskId(id) {
+            if (id.length < 8) return id;
+            return id.substring(0, 4) + '...' + id.substring(id.length - 4);
+        }
+
+        // ========== ОТПРАВКА КОМАНД В TELEGRAM ==========
         async function sendTelegramCommand(method, params = {}) {
-            const token = localStorage.getItem('botToken');
-            const chatId = localStorage.getItem('chatId');
+            const activeGroup = groups.find(g => g.id === activeGroupId);
             
-            if (!token || !chatId) {
-                showStatus('❌ Сначала сохрани настройки!', 'error');
+            if (!activeGroup) {
+                showNotification('Ошибка', 'Выберите группу!', 'error');
                 return null;
             }
             
-            params.chat_id = chatId;
-            const url = `https://api.telegram.org/bot${token}/${method}`;
+            params.chat_id = activeGroup.chatId;
+            const url = `https://api.telegram.org/bot${activeGroup.token}/${method}`;
             
             try {
                 const response = await fetch(url, {
@@ -195,25 +698,28 @@
                 const data = await response.json();
                 
                 if (!data.ok) {
-                    showStatus(`❌ Ошибка: ${data.description}`, 'error');
+                    showNotification('Ошибка Telegram', data.description, 'error');
                     return null;
                 }
+                
                 return data;
             } catch (error) {
-                showStatus('❌ Ошибка подключения', 'error');
+                showNotification('Ошибка', 'Не удалось подключиться к Telegram API', 'error');
                 return null;
             }
         }
 
+        // ========== КОМАНДЫ УПРАВЛЕНИЯ ==========
         async function setGroupTitle() {
             const title = document.getElementById('groupTitle').value.trim();
             if (!title) {
-                showStatus('❌ Введи название!', 'error');
+                showNotification('Ошибка', 'Введите название группы!', 'error');
                 return;
             }
+            
             const result = await sendTelegramCommand('setChatTitle', {title: title});
             if (result) {
-                showStatus(`✅ Название изменено`, 'success');
+                showNotification('Успешно', `Название изменено на: ${title}`, 'success');
                 document.getElementById('groupTitle').value = '';
             }
         }
@@ -222,7 +728,7 @@
             const desc = document.getElementById('groupDescription').value.trim();
             const result = await sendTelegramCommand('setChatDescription', {description: desc || ' '});
             if (result) {
-                showStatus('✅ Описание обновлено', 'success');
+                showNotification('Успешно', 'Описание группы обновлено', 'success');
                 document.getElementById('groupDescription').value = '';
             }
         }
@@ -230,7 +736,7 @@
         async function deleteGroupPhoto() {
             const result = await sendTelegramCommand('deleteChatPhoto');
             if (result) {
-                showStatus('✅ Фото удалено', 'success');
+                showNotification('Успешно', 'Фото группы удалено', 'success');
             }
         }
 
@@ -238,27 +744,43 @@
             const result = await sendTelegramCommand('getChat');
             if (result) {
                 const chat = result.result;
-                const infoDiv = document.getElementById('groupInfo');
-                infoDiv.style.display = 'block';
-                infoDiv.innerHTML = `
-                    <div class="info-row"><span>📌 Название:</span> <span>${chat.title || '-'}</span></div>
-                    <div class="info-row"><span>🆔 ID:</span> <span>${chat.id || '-'}</span></div>
-                    <div class="info-row"><span>📝 Описание:</span> <span>${chat.description || 'нет'}</span></div>
-                    <div class="info-row"><span>🖼 Фото:</span> <span>${chat.photo ? '✅ есть' : '❌ нет'}</span></div>
-                `;
-                showStatus('✅ Информация получена', 'success');
+                
+                document.getElementById('infoTitle').textContent = chat.title || '-';
+                document.getElementById('infoId').textContent = chat.id || '-';
+                document.getElementById('infoDesc').textContent = chat.description || 'нет';
+                document.getElementById('infoPhoto').textContent = chat.photo ? '✅ есть' : '❌ нет';
+                
+                const membersResult = await sendTelegramCommand('getChatMemberCount');
+                if (membersResult) {
+                    document.getElementById('infoMembers').textContent = membersResult.result || '-';
+                }
+                
+                document.getElementById('groupInfo').style.display = 'block';
+                showNotification('Успешно', 'Информация о группе получена', 'success');
             }
         }
 
-        function showStatus(text, type) {
-            const status = document.getElementById('statusMessage');
-            const statusText = document.getElementById('statusText');
-            statusText.textContent = text;
-            status.className = 'status show ' + (type || 'info');
-            setTimeout(() => status.classList.remove('show'), 5000);
+        function copyGroupId() {
+            const activeGroup = groups.find(g => g.id === activeGroupId);
+            if (activeGroup) {
+                navigator.clipboard.writeText(activeGroup.chatId);
+                showNotification('Скопировано', 'ID группы в буфере обмена', 'success');
+            }
         }
 
-        window.onload = loadSettings;
+        function copyBotToken() {
+            const activeGroup = groups.find(g => g.id === activeGroupId);
+            if (activeGroup) {
+                navigator.clipboard.writeText(activeGroup.token);
+                showNotification('Скопировано', 'Токен бота в буфере обмена', 'success');
+            }
+        }
+
+        // ========== ИНИЦИАЛИЗАЦИЯ ==========
+        window.onload = function() {
+            loadGroups();
+            showNotification('Добро пожаловать', 'Telegram Group Manager запущен', 'info', 3000);
+        };
     </script>
 </body>
 </html>
