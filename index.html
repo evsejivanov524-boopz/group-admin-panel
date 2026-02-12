@@ -1,0 +1,527 @@
+ 
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telegram Group Manager</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background: #0a0a0a;
+            color: white;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* ЗАГОЛОВОК */
+        .header {
+            background: linear-gradient(145deg, #1a1a1a, #0d0d0d);
+            border-radius: 30px;
+            padding: 30px;
+            margin-bottom: 25px;
+            border: 1px solid #333;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .subtitle {
+            color: #888;
+            font-size: 14px;
+        }
+
+        /* ВКЛАДКИ */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            background: #111;
+            padding: 10px;
+            border-radius: 20px;
+            border: 1px solid #333;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+            color: #888;
+        }
+
+        .tab.active {
+            background: #40a7e3;
+            color: white;
+            box-shadow: 0 5px 15px rgba(64, 167, 227, 0.3);
+        }
+
+        /* КАРТОЧКИ */
+        .card {
+            background: #111;
+            border-radius: 25px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 1px solid #333;
+            display: none;
+        }
+
+        .card.active {
+            display: block;
+        }
+
+        /* ПОЛЯ ВВОДА */
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #aaa;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 15px;
+            background: #1a1a1a;
+            border: 2px solid #333;
+            border-radius: 15px;
+            color: white;
+            font-size: 16px;
+            transition: all 0.2s;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #40a7e3;
+            background: #222;
+        }
+
+        /* КНОПКИ */
+        .btn {
+            background: #40a7e3;
+            color: white;
+            border: none;
+            border-radius: 15px;
+            padding: 15px 25px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.2s;
+            margin-bottom: 10px;
+        }
+
+        .btn:hover {
+            background: #2d8ac7;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(64, 167, 227, 0.4);
+        }
+
+        .btn.red {
+            background: #e34a40;
+        }
+
+        .btn.red:hover {
+            background: #c73a30;
+            box-shadow: 0 5px 20px rgba(227, 74, 64, 0.4);
+        }
+
+        .btn.green {
+            background: #2ecc71;
+        }
+
+        .btn.green:hover {
+            background: #27ae60;
+        }
+
+        /* СТАТУС */
+        .status {
+            background: #1a1a1a;
+            border-left: 5px solid #40a7e3;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .status.show {
+            display: block;
+            animation: slideIn 0.3s;
+        }
+
+        .status.error {
+            border-left-color: #e34a40;
+        }
+
+        .status.success {
+            border-left-color: #2ecc71;
+        }
+
+        /* СОХРАНЕННЫЕ ДАННЫЕ */
+        .saved-info {
+            background: #1a1a1a;
+            padding: 15px;
+            border-radius: 15px;
+            margin-top: 15px;
+            font-size: 14px;
+            border: 1px solid #333;
+        }
+
+        .saved-info span {
+            color: #40a7e3;
+            font-weight: 600;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #333;
+        }
+
+        .info-label {
+            color: #888;
+        }
+
+        .info-value {
+            color: #fff;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- ШАПКА -->
+        <div class="header">
+            <h1>🤖 Telegram Group Manager</h1>
+            <div class="subtitle">Управляй группами Telegram через веб-интерфейс</div>
+        </div>
+
+        <!-- ВКЛАДКИ -->
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab('settings')">⚙️ Настройки</div>
+            <div class="tab" onclick="switchTab('manage')">🎮 Управление</div>
+            <div class="tab" onclick="switchTab('info')">ℹ️ Информация</div>
+        </div>
+
+        <!-- ВКЛАДКА 1: НАСТРОЙКИ -->
+        <div id="settings" class="card active">
+            <h2 style="margin-bottom: 25px; display: flex; gap: 10px;">⚙️ Настройки подключения</h2>
+            
+            <div class="input-group">
+                <label>🤖 Токен бота</label>
+                <input type="text" id="botToken" placeholder="123456789:ABCdefGHIjklMNOpqrsTUVwxyz" value="">
+                <small style="color: #888; margin-top: 5px; display: block;">Получи у @BotFather</small>
+            </div>
+
+            <div class="input-group">
+                <label>👥 ID группы</label>
+                <input type="text" id="chatId" placeholder="-1001234567890" value="">
+                <small style="color: #888; margin-top: 5px; display: block;">Добавь @getidsbot в группу чтобы узнать ID</small>
+            </div>
+
+            <button class="btn green" onclick="saveSettings()">💾 СОХРАНИТЬ НАСТРОЙКИ</button>
+            
+            <div id="savedSettings" class="saved-info" style="display: none;">
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                    <span style="background: #2ecc71; width: 10px; height: 10px; border-radius: 50%; display: inline-block;"></span>
+                    <span style="color: #2ecc71; font-weight: 600;">Настройки сохранены</span>
+                </div>
+                <div style="word-break: break-all;">
+                    <span>Токен:</span> <span id="savedToken">не указан</span><br>
+                    <span>Chat ID:</span> <span id="savedChatId">не указан</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ВКЛАДКА 2: УПРАВЛЕНИЕ -->
+        <div id="manage" class="card">
+            <h2 style="margin-bottom: 25px; display: flex; gap: 10px;">🎮 Управление группой</h2>
+            
+            <!-- НАЗВАНИЕ -->
+            <div style="margin-bottom: 30px;">
+                <h3 style="margin-bottom: 15px; color: #40a7e3;">📌 Название группы</h3>
+                <div class="input-group">
+                    <input type="text" id="groupTitle" placeholder="Введите новое название">
+                </div>
+                <button class="btn" onclick="setGroupTitle()">ИЗМЕНИТЬ НАЗВАНИЕ</button>
+            </div>
+
+            <!-- ОПИСАНИЕ -->
+            <div style="margin-bottom: 30px;">
+                <h3 style="margin-bottom: 15px; color: #40a7e3;">📄 Описание группы</h3>
+                <div class="input-group">
+                    <textarea id="groupDescription" rows="4" placeholder="Введите новое описание"></textarea>
+                </div>
+                <button class="btn" onclick="setGroupDescription()">ОБНОВИТЬ ОПИСАНИЕ</button>
+            </div>
+
+            <!-- ФОТО -->
+            <div style="margin-bottom: 30px;">
+                <h3 style="margin-bottom: 15px; color: #40a7e3;">🖼 Фото группы</h3>
+                <button class="btn red" onclick="deleteGroupPhoto()">УДАЛИТЬ ФОТО</button>
+            </div>
+        </div>
+
+        <!-- ВКЛАДКА 3: ИНФОРМАЦИЯ -->
+        <div id="info" class="card">
+            <h2 style="margin-bottom: 25px; display: flex; gap: 10px;">ℹ️ Информация о группе</h2>
+            
+            <button class="btn" onclick="getGroupInfo()">📊 ПОЛУЧИТЬ ИНФОРМАЦИЮ</button>
+            
+            <div id="groupInfo" style="margin-top: 25px; display: none;">
+                <div class="info-row">
+                    <span class="info-label">📌 Название:</span>
+                    <span class="info-value" id="infoTitle">-</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">🆔 ID:</span>
+                    <span class="info-value" id="infoId">-</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">📝 Описание:</span>
+                    <span class="info-value" id="infoDesc">-</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">🖼 Фото:</span>
+                    <span class="info-value" id="infoPhoto">-</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">👥 Участников:</span>
+                    <span class="info-value" id="infoMembers">-</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- СТАТУС -->
+        <div id="statusMessage" class="status">
+            <span id="statusText"></span>
+        </div>
+    </div>
+
+    <script>
+        // ========== ПЕРЕКЛЮЧЕНИЕ ВКЛАДОК ==========
+        function switchTab(tabId) {
+            // Убираем active у всех табов и карточек
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
+            
+            // Активируем выбранный таб и карточку
+            document.querySelector(`.tab[onclick="switchTab('${tabId}')"]`).classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        }
+
+        // ========== СОХРАНЕНИЕ НАСТРОЕК ==========
+        function saveSettings() {
+            const token = document.getElementById('botToken').value.trim();
+            const chatId = document.getElementById('chatId').value.trim();
+            
+            if (!token || !chatId) {
+                showStatus('❌ Введи токен и ID группы!', 'error');
+                return;
+            }
+            
+            // Сохраняем в localStorage
+            localStorage.setItem('botToken', token);
+            localStorage.setItem('chatId', chatId);
+            
+            // Отображаем сохраненные настройки
+            document.getElementById('savedToken').textContent = maskToken(token);
+            document.getElementById('savedChatId').textContent = chatId;
+            document.getElementById('savedSettings').style.display = 'block';
+            
+            showStatus('✅ Настройки сохранены!', 'success');
+        }
+
+        // ========== ЗАГРУЗКА СОХРАНЕННЫХ НАСТРОЕК ==========
+        function loadSettings() {
+            const token = localStorage.getItem('botToken');
+            const chatId = localStorage.getItem('chatId');
+            
+            if (token) {
+                document.getElementById('botToken').value = token;
+                document.getElementById('savedToken').textContent = maskToken(token);
+            }
+            if (chatId) {
+                document.getElementById('chatId').value = chatId;
+                document.getElementById('savedChatId').textContent = chatId;
+            }
+            if (token && chatId) {
+                document.getElementById('savedSettings').style.display = 'block';
+            }
+        }
+
+        // ========== МАСКИРОВКА ТОКЕНА ==========
+        function maskToken(token) {
+            if (token.length < 10) return token;
+            return token.substring(0, 6) + '...' + token.substring(token.length - 4);
+        }
+
+        // ========== ОТПРАВКА КОМАНД В TELEGRAM ==========
+        async function sendTelegramCommand(method, params = {}) {
+            const token = localStorage.getItem('botToken');
+            const chatId = localStorage.getItem('chatId');
+            
+            if (!token || !chatId) {
+                showStatus('❌ Сначала сохрани настройки!', 'error');
+                switchTab('settings');
+                return null;
+            }
+            
+            // Добавляем chat_id к параметрам
+            params.chat_id = chatId;
+            
+            // Формируем URL
+            const url = `https://api.telegram.org/bot${token}/${method}`;
+            
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(params)
+                });
+                
+                const data = await response.json();
+                
+                if (!data.ok) {
+                    showStatus(`❌ Ошибка: ${data.description}`, 'error');
+                    return null;
+                }
+                
+                return data;
+            } catch (error) {
+                showStatus('❌ Ошибка подключения к Telegram API', 'error');
+                return null;
+            }
+        }
+
+        // ========== ИЗМЕНЕНИЕ НАЗВАНИЯ ==========
+        async function setGroupTitle() {
+            const title = document.getElementById('groupTitle').value.trim();
+            if (!title) {
+                showStatus('❌ Введи название группы!', 'error');
+                return;
+            }
+            
+            const result = await sendTelegramCommand('setChatTitle', {
+                title: title
+            });
+            
+            if (result) {
+                showStatus(`✅ Название изменено на: ${title}`, 'success');
+                document.getElementById('groupTitle').value = '';
+            }
+        }
+
+        // ========== ИЗМЕНЕНИЕ ОПИСАНИЯ ==========
+        async function setGroupDescription() {
+            const description = document.getElementById('groupDescription').value.trim();
+            
+            const result = await sendTelegramCommand('setChatDescription', {
+                description: description || ' '  // Пустая строка не работает, ставим пробел
+            });
+            
+            if (result) {
+                showStatus('✅ Описание группы обновлено', 'success');
+                document.getElementById('groupDescription').value = '';
+            }
+        }
+
+        // ========== УДАЛЕНИЕ ФОТО ==========
+        async function deleteGroupPhoto() {
+            const result = await sendTelegramCommand('deleteChatPhoto');
+            
+            if (result) {
+                showStatus('✅ Фото группы удалено', 'success');
+            }
+        }
+
+        // ========== ПОЛУЧЕНИЕ ИНФОРМАЦИИ ==========
+        async function getGroupInfo() {
+            const result = await sendTelegramCommand('getChat');
+            
+            if (result) {
+                const chat = result.result;
+                
+                document.getElementById('infoTitle').textContent = chat.title || '-';
+                document.getElementById('infoId').textContent = chat.id || '-';
+                document.getElementById('infoDesc').textContent = chat.description || 'нет';
+                document.getElementById('infoPhoto').textContent = chat.photo ? '✅ есть' : '❌ нет';
+                
+                // Получаем количество участников
+                const membersResult = await sendTelegramCommand('getChatMemberCount');
+                if (membersResult) {
+                    document.getElementById('infoMembers').textContent = membersResult.result || '-';
+                }
+                
+                document.getElementById('groupInfo').style.display = 'block';
+                showStatus('✅ Информация получена', 'success');
+            }
+        }
+
+        // ========== ОТОБРАЖЕНИЕ СТАТУСА ==========
+        function showStatus(text, type = 'info') {
+            const status = document.getElementById('statusMessage');
+            const statusText = document.getElementById('statusText');
+            
+            statusText.textContent = text;
+            status.className = 'status show';
+            
+            if (type === 'error') {
+                status.classList.add('error');
+                status.classList.remove('success');
+            } else if (type === 'success') {
+                status.classList.add('success');
+                status.classList.remove('error');
+            }
+            
+            // Автоматически скрываем через 5 секунд
+            setTimeout(() => {
+                status.classList.remove('show');
+            }, 5000);
+        }
+
+        // ========== ЗАГРУЗКА ПРИ СТАРТЕ ==========
+        window.onload = function() {
+            loadSettings();
+        };
+    </script>
+</body>
+</html>
